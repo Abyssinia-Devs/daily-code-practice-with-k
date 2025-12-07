@@ -1,8 +1,10 @@
-
 students = {}
 
 def add_student():
-    name = input("Enter student name: ")
+    name = input("Enter student name: ").strip()
+    if not name:
+        print("Error: Name cannot be empty.")
+        return
     if name in students:
         print("Student already exists.")
     else:
@@ -10,13 +12,19 @@ def add_student():
         print("Student added!")
 
 def add_grade():
-    name = input("Enter student name: ")
+    name = input("Enter student name: ").strip()
+    if not name:
+        print("Error: Name cannot be empty.")
+        return
     if name not in students:
         print("Student not found.")
         return
-    grade = float(input("Enter grade: "))
-    students[name].append(grade)
-    print("Grade added!")
+    try:
+        grade = float(input("Enter grade: "))
+        students[name].append(grade)
+        print("Grade added!")
+    except ValueError:
+        print("Error: Invalid grade! Please enter a number.")
 
 def view_students():
     if not students:
@@ -24,8 +32,11 @@ def view_students():
         return
     print("\n----------- STUDENT LIST -----------")
     for name, grades in students.items():
-        avg = sum(grades) / len(grades) if grades else 0
-        print(f"{name} -> Grades: {grades} | Avg: {avg:.2f}")
+        if grades:
+            avg = sum(grades) / len(grades)
+            print(f"{name} -> Grades: {grades} | Avg: {avg:.2f}")
+        else:
+            print(f"{name} -> Grades: {grades} | Avg: N/A")
     print("------------------------------------")
 
 def top_student():
@@ -48,7 +59,10 @@ def top_student():
         print("No grades entered yet.")
 
 def delete_student():
-    name = input("Enter student name to delete: ")
+    name = input("Enter student name to delete: ").strip()
+    if not name:
+        print("Error: Name cannot be empty.")
+        return
     if name in students:
         del students[name]
         print("Student deleted.")
@@ -66,7 +80,7 @@ def main():
         print("6. Exit")
         print("===========================================")
 
-        choice = input("Choose option: ")
+        choice = input("Choose option: ").strip()
 
         if choice == "1":
             add_student()
@@ -82,6 +96,8 @@ def main():
             print("Goodbye!")
             break
         else:
-            print("Invalid option.")
+            print("Invalid option. Please choose 1–6.")
 
-main()
+if __name__ == "__main__":
+    main()
+    
